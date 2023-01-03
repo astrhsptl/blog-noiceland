@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    entrypoint: 
+      - /app/entrypoint.sh
+    volumes:
+      - web:/app/
+    ports:
+      - 4000:4000
+    depends_on:
+      - db
+      - celery
+
+  db:
+    image: postgres:13
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
+
+  redis:
+    image: redis:latest 
+
+  celery:
+    build: .
+    volumes:
+      - celery:/app/
+    depends_on:
+      - redis
+
+volumes:
+  web: 
+  celery:
+  postgres_data:
+  
