@@ -39,15 +39,17 @@ class User(AbstractBaseUser):
         default=uuid.uuid4,
         editable=False)
     email = models.EmailField(max_length=256, unique=True)
-    username = models.CharField(max_length=256, unique=True)
+    nickname = models.CharField(max_length=256, unique=True)
+    avatar = models.ImageField(upload_to='profile/avatar/')
+    created = models.DateField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
 
     # Auth settings
-    USERNAME_FIELD = 'username'
+    USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = [
-        'email'
+        'nickname'
     ]
 
     objects = UserManager()
@@ -62,10 +64,28 @@ class User(AbstractBaseUser):
         return self.email
 
     def get_absolute_url(self,):
-        return reverse_lazy('moder_user_detail', kwargs={'id': self.id})
+        return reverse_lazy('user_detail', kwargs={'id': self.id})
 
     class Meta:
         indexes = [
             models.Index(fields=['id'], name='id_index'),
         ]
 
+
+class Profile_photos(models.Model):
+    id = models.UUIDField(
+        primary_key=True,
+        db_index=True,
+        default=uuid.uuid4,
+        editable=False)
+    photo = models.ImageField(upload_to='profile/avatar/')
+    created = models.DateField(auto_now_add=True)
+    user = models.ForeignKey(User, models.CASCADE)
+
+    def get_absolute_url(self,):
+        return reverse_lazy('photo_datail', kwargs={'id': self.id})
+ 
+    class Meta:
+        indexes = [
+            models.Index(fields=['id'], name='id_index'),
+        ]
