@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Libre+Franklin&display=swap%27');
+
+body {
+    margin: 0;
+
+}
+
+/*Header*/
+
+.header {
+    left: 0px;
+    top: 0px;
+
+    height: 90px;
+    width: auto;
+    border-radius: 0px;
+    border: 1px solid #e0dbdbdc;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+}
+
+/*Container_net*/
+
+.container {
+    display: flex;
+    position: relative;
+    margin: 0 auto;
+    align-items: center;
+
+    width: 100%;
+    max-width: 85%;
+    height: 90px;
+}
+
+/*header__inner_content*/
+
+.header__inner {
+    display: inline-flex;
+}
+
+/*nav_container*/
+
+.nav {
+    display: inline-flex;
+    margin-left: auto; 
+    
+    
+    right: 0px;
+    z-index: 1000;
+}
+
+/*nav a content*/
+
+.nav a {
+    display: inline-flex;
+    margin-left: 1000px;
+    vertical-align: top;
+    margin: 0 39.61px;
+    font-family: 'Libre Franklin';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 24px;
+    text-decoration: none;
+    color: black;
+
+} 
+
+.container_big_block {
+    display: grid;
+    margin: 0;
+    padding: 0;
+    margin: 0 auto;
+    height: 472.5px;
+    width: 1625px;
+    left: 8.33%;
+    right: 8.33%;
+    background-color: aqua ;
+    grid-template-areas: 
+    "AAA BBBB"
+    "AAA BBBB";
+
+
+}
