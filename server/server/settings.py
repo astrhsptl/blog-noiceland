@@ -23,7 +23,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(int(env('DEBUG')))
 
-ALLOWED_HOSTS = ['0.0.0.0']
+ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1']
 
 
 # Application definition
@@ -49,9 +49,12 @@ INSTALLED_APPS = [
     'rest_framework',
     'debug_toolbar',
 
+    # 'ckeditor_uploader',
+    # 'ckeditor',
 
     # third part
     'authsystem.apps.AuthsystemConfig',
+    'pages.apps.PagesConfig',
 
 ]
 
@@ -96,39 +99,39 @@ WSGI_APPLICATION = 'server.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env('DB_NAME'),
-        'USER': env('DB_USER'),
-        'PASSWORD': env('DB_PASSWORD'),
-        'HOST': env('DB_HOST'),
-        'PORT': int( env('DB_PORT') ),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': env('DB_NAME'),
+#         'USER': env('DB_USER'),
+#         'PASSWORD': env('DB_PASSWORD'),
+#         'HOST': env('DB_HOST'),
+#         'PORT': int( env('DB_PORT') ),
+#     }
+# }
 
 # Rest Framework Settings
 # https://www.django-rest-framework.org
 
-REST_FRAMEWORK = {
-    # 'DEFAULT_RENDERER_CLASSES': [
-    #     'rest_framework.renderers.JSONRenderer',
-    # ],
-    # 'DEFAULT_PARSER_CLASSES': [
-    #     'rest_framework.parsers.JSONParser',
-    # ],
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'server.jwt.JWTAuthClass'
-    ]
-}
+# REST_FRAMEWORK = {
+#     'DEFAULT_RENDERER_CLASSES': [
+#         'rest_framework.renderers.JSONRenderer',
+#     ],
+#     'DEFAULT_PARSER_CLASSES': [
+#         'rest_framework.parsers.JSONParser',
+#     ],
+#     'DEFAULT_AUTHENTICATION_CLASSES': [
+#         'server.jwt.JWTAuthClass'
+#     ]
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -209,9 +212,6 @@ CELERY_RESULT_SERIALIZER = 'json'
 
 # All-Auth configutation
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
-
-AUTH_USER_MODEL = 'authsystem.User' 
-
 SITE_ID = 1
 
 LOGIN_REDIRECT_URL = 'home'
@@ -223,12 +223,13 @@ AUTHENTICATION_BACKENDS = (
 'allauth.account.auth_backends.AuthenticationBackend',
 )
 
-ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
+AUTH_USER_MODEL = 'authsystem.User' 
+
+
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+ACCOUNT_EMAIL_CONFIRMATION_HMAC = False
 ACCOUNT_SESSION_REMEMBER = True
-ACCOUNT_USERNAME_REQUIRED = True
-ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_UNIQUE_EMAIL = True
 
 # Crispy forms settings
 # https://django-crispy-forms.readthedocs.io/en/latest/
@@ -251,6 +252,36 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
 INTERNAL_IPS = [ip[:-1] + "1" for ip in ips]
 
+# CKEditor
+# https://django-ckeditor.readthedocs.io/en/latest/
+# CKEDITOR_CONFIGS = {
+#     'default': {
+#         'toolbar': [
+#             ['Undo', 'Redo',
+#              '-', 'Bold', 'Italic', 'Underline',
+#              '-', 'Link', 'Unlink', 'Anchor',
+#              '-', 'Format',
+#              '-', 'Maximize',
+#              '-', 'Table',
+#              '-', 'Image',
+#              '-', 'Source',
+#              '-', 'NumberedList', 'BulletedList'
+#             ],
+#             ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock',
+#              '-', 'Font', 'FontSize', 'TextColor',
+#              '-', 'Outdent', 'Indent',
+#              '-', 'HorizontalRule',
+#              '-', 'Blockquote'
+#             ]
+#         ],
+#         'height': 500,
+#         'width': '100%',
+#         'toolbarCanCollapse': False,
+#         'forcePasteAsPlainText': True
+#     }
+# }
+# CKEDITOR_UPLOAD_PATH = "uploads/"
+# CKEDITOR_BASEPATH = "/assets/ckeditor/ckeditor/"
 
 ### DAJNGO SECURITY
 # https://docs.djangoproject.com/en/4.1/topics/security/

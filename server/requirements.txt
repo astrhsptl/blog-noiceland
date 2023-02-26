@@ -6,6 +6,7 @@ charset-normalizer==2.1.1
 coreapi==2.3.3
 coreschema==0.0.4
 cryptography==38.0.4
+django-ckeditor==6.5.1
 defusedxml==0.7.1
 Django==4.1.4
 django-allauth==0.51.0
@@ -23,6 +24,7 @@ Jinja2==3.1.2
 MarkupSafe==2.1.1
 oauthlib==3.2.2
 packaging==22.0
+Pillow==9.4.0
 psycopg2-binary==2.9.5
 pycparser==2.21
 PyJWT==2.6.0

@@ -9,38 +9,47 @@ from django.contrib.auth.models import (
 # Create your models here.
 
 class UserManager(BaseUserManager):
-    def create_user(self, username, email, password=None):
-        if email is None:
-            raise TypeError('Users must have an email address.')
-
+    def create_user(self, username, email, password, avatar=None):
+        print(self.model)
         user = self.model(email=self.normalize_email(email))
         user.username = username
+        user.avatar = avatar
         user.set_password(password)
         user.save()
 
         return user
 
-    def create_superuser(self, username, email, password):
-        if password is None:
-            raise TypeError('Superusers must have a password.')
-
-        user = self.create_user(username, email, password)
+    def create_superuser(self, username, email, password, avatar=None):
+        user = self.create_user(username, email, password, avatar)
         user.is_superuser = True
         user.is_staff = True
         user.private_access = True
+        user.set_password(password)
         user.save()
 
         return user
 
 class User(AbstractBaseUser):
+    '''
+    User model
+        - uuid
+        - email
+        - username
+        - avatar
+        - created
+        - is_active
+        - is_staff
+        - is_superuser
+    '''
     id = models.UUIDField(
         primary_key=True,
         db_index=True,
         default=uuid.uuid4,
         editable=False)
-    email = models.EmailField(max_length=256, unique=True)
-    nickname = models.CharField(max_length=256, unique=True)
-    avatar = models.ImageField(upload_to='profile/avatar/')
+    username = None
+    email = models.EmailField('email adress', max_length=256, unique=True,)
+    username = models.CharField(max_length=256, unique=True)
+    avatar = models.ImageField(upload_to='profile/avatar/', null=True, blank=True)
     created = models.DateField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -49,7 +58,7 @@ class User(AbstractBaseUser):
     # Auth settings
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = [
-        'nickname'
+        'username'
     ]
 
     objects = UserManager()
@@ -64,15 +73,23 @@ class User(AbstractBaseUser):
         return self.email
 
     def get_absolute_url(self,):
-        return reverse_lazy('user_detail', kwargs={'id': self.id})
+        return reverse_lazy('user_detail', kwargs={'pk': self.id})
 
     class Meta:
+        verbose_name = ("User")
+        verbose_name_plural = ("Users")
         indexes = [
             models.Index(fields=['id'], name='id_index'),
         ]
 
-
-class Profile_photos(models.Model):
+class ProfilePhoto(models.Model):
+    '''
+    Photo model
+        - uuid
+        - photo
+        - created
+        - user
+    '''
     id = models.UUIDField(
         primary_key=True,
         db_index=True,
@@ -83,9 +100,8 @@ class Profile_photos(models.Model):
     user = models.ForeignKey(User, models.CASCADE)
 
     def get_absolute_url(self,):
-        return reverse_lazy('photo_datail', kwargs={'id': self.id})
+        return reverse_lazy('photo_detail', kwargs={'pk': self.id})
  
     class Meta:
-        indexes = [
-            models.Index(fields=['id'], name='id_index'),
-        ]
+        verbose_name = ("Profile photo")
+        verbose_name_plural = ("Profile photos")

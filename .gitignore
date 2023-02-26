@@ -1,0 +1,11 @@
+env/
+
+server/media
+
+server/db.sqlite3
+
+
+server/authsystem/__pycache__
+server/authsystem/migrations/*.py
+
+server/pages/migrations/*.py

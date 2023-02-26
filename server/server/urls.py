@@ -19,9 +19,12 @@ from django.urls import path, include
 from .settings import DEBUG
 
 urlpatterns = [
-    path('', include('authsystem.urls')),
-
+    path('', include('pages.urls')),
+    path('accounts/', include('authsystem.urls')),
     path('admin/', admin.site.urls),
+    # path(r'^ckeditor/', include('ckeditor_uploader.urls')),
+
+
 ]
 
 if DEBUG:
