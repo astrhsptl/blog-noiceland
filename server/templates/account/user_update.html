@@ -1,0 +1,115 @@
+{% extends '_base.html' %}
+{% load static %}
+
+
+{% block head %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href={% static 'styles/account.css' %} >
+    <link rel="stylesheet" href={% static 'styles/profile-head-styles.css' %} >
+    <link rel="stylesheet" href={% static 'styles/edit.css' %} >
+    <link rel="stylesheet" href={% static 'components/_header.css' %} >
+    <link rel="stylesheet" href={% static 'components/_footer.css' %} >
+    <title>{{ author.username }}</title>
+{% endblock head %}
+
+{% block main %}
+    {% include "compoments/_header.html" %}
+    
+    <div class="main">
+        <form  method="post" enctype="multipart/form-data">
+            <div class="profile__header container__custom header-edit__custom">
+                {% csrf_token %}
+
+                <div class="profile-background">
+                    <div class="button__background">
+                        <input id='id_background' name='background' type='file' accept='image/*' />
+                        <div class="decoration__background-edit">
+                            <image src="{% static 'images/icons8-pencil-48 1.png' %}" /> 
+                            Change cover
+                        </div>
+                    </div>
+                    <img class="image__backgound" src={{ author.background.url }} alt=""> 
+                </div>
+                
+                <div class="profile-preview-content">
+                    <div class="profile-avatar-block">
+                            <div style="display: none">
+                                <input id='id_avatar' name='avatar' type='file' accept='image/*' />
+                            </div>
+                            <img class="avatar" src={{ author.avatar.url }} alt="">
+                            <input id="id_avatar" type="file" name="avatar" accept="image/*" onchange="this.form.submit()" />
+                            <svg width="50" class="edit__avatar" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <rect width="50" height="50" fill="url(#pattern0)"/>
+                                <defs>
+                                <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
+                                <use xlink:href="#image0_202_24" transform="scale(0.02)"/>
+                                </pattern>
+                                <image id="image0_202_24" width="50" height="50" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAADVklEQVR4nO2Z20tUURTGR7CQGi+96lukCUFqBkFGEBEkSdb/0gU0n7zVi1JYZBd87fLYk44Z/Q+V+eolMiooy4rIX6zhO7QYBp0zc+YME+eDA2efOWvt/Z113XtSqQQJEiTYCcAF4B2lY810pSoBoBv4RXT4DRyLm8QeYEkLmIhA34R0LZnuaFZZ2MR3NPEroC4CfXXSZbhdrJLdwI0ifP0n0FEqCbeODukMG1vjxsEUXCc8VoG+qEg4Mn1aXFiMpZzg8YgWcxC4CswDi8A3XXafAa4AbRHN1RNYxgZZRKD0KPA8xFc0ot0RzJtFyUSAXcAUsCVVn4AHwHlZZ68uu+8HHuodJHMLqC0bEeCcYsGwAvTmeWcfsKB3vgPDQEMBkzcAI8Cms05TuYjY4j2W81giILEMdLnfzgD3gbc5MXIPOJ1TVFccmdpKEJlyJJr1rA14yc54ARyQTLOb62Y5iPS6CWyxZ3MCe0vulLUEcBL4rPffAwOqDUGMdAKD+g3FyQnJHpGb/bH7SInsIBxkp2FniYDEIyC9jWw98NiRCSwzqmeZWIgo+wSLyAa2cycjUVOAjhrgiWQW9KzRfYzWOIhYsTM8dIEduFM6hB6zzLpkswkAmNH4chxErDob+jW27GQYKFSH03VNstMaX9R4Lg4iQfuebTOUYg2HiyBiCcCwmOO2b+MgsiGRdL5xSCJpyW7kG5ebyNcIiViFN3zJN65G13pTCdfK5AS7tR2GwSKIDEn2bk6wz8ZBxPYTPv2edum3PoQec6MPkj2Vk34vVaogWu+EKnahBfGpZOYrUhAN6lQNIxofcHuMJ9tZRpYISHwE9uv5WFi3ioJIt5rGzaDJswbQkVlXsetSSk3rfsi5k5HocU3oDzWNnbERkQLb2aEOucVZJtijbId5Z4kW12VPFrGOkonUOhdb8e23EsC0pVXVGbteW3YKAttZIiAxV5aNVYFKmhyZTbXijQXINSomfjgS5dnqhrTMTfk3yjwzOuBudzHSrjox47KTyUyW9fAhLIBDwDMKRybsbjAWIk5xq+0n5C6LLkYsXmat2AW7wojmKw+RuMH/SGRN99niVE3g39nvakrH8tWO0eD/kfEij/MrjVXVrt2V9o4ECRIkSJCqavwFaqsKXlauSLIAAAAASUVORK5CYII="/>
+                                </defs>
+                            </svg>
+                    </div>
+                    <div class="profile-title">
+                        <div class="profile-title-name">{{ author.name }} {{ author.lastname }}</div>
+                        <div class="profile-title-status">{{ author.status }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="all">
+                <div class="all__part_with_content">
+                    <div class="all__part_with_content-text">
+                        <div class="headline">
+                            <a class="all__part_with_content-text_a">Personal information</a>
+                            <hr  width="100%" size="2" color="#FFFFFF" />
+                        </div>
+                    </div>
+
+                    <div class="position">
+                        {{ form.non_field_errors }}
+                        
+                        <div class="all__part_with_content-name">
+                            <label for="name" class="text-field__label">{{ form.name.label }}</label>
+                            <label for="name" class="text-field__label">{{ form.name.errors }}</label>
+                            {{ form.name }}
+                        </div>
+                        
+                        <div class="all__part_with_content-name">
+                            <label for="lastname" class="text-field__label">{{ form.lastname.label }}</label>
+                            <label for="lastname" class="text-field__label">{{ form.lastname.errors }}</label>
+                            {{ form.lastname }}
+                        </div>
+
+                        <div class="all__part_with_content-name">
+                            <label for="username" class="text-field__label">{{ form.username.label }}</label>
+                            <label for="username" class="text-field__label">{{ form.username.errors }}</label>
+                            {{ form.username }}
+                        </div>
+
+                        <div class="all__part_with_content-name">
+                            <label for="email" class="text-field__label">{{ form.email.label }}</label>
+                            <label for="email" class="text-field__label">{{ form.email.errors }}</label>
+                            {{ form.email }}
+                        </div>
+
+                        <div class="all__part_with_content-name">
+                            <label for="status" class="text-field__label">{{ form.status.label }}</label>
+                            <label for="status" class="text-field__label">{{ form.status.errors }}</label>
+                            {{ form.status }}
+                        </div>
+
+                        <div class="all__part_with_content-name">
+                            <label class="text-field__label" for="login">Submit</label>
+                            <input class="text-field__input" type="submit"  value="Submit">
+                        </div>
+                    </div>                
+                </div>
+            </div>
+        </form>
+    </div>
+
+{% include "compoments/_footer.html" %}
+
+{% endblock main %}

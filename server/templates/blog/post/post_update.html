@@ -1,0 +1,82 @@
+{% extends '_base.html' %}
+{% load static %}
+
+
+{% block head %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href={% static 'styles/account.css' %} >
+    <link rel="stylesheet" href={% static 'styles/sign_up.css' %} >
+    <link rel="stylesheet" href={% static 'styles/creational.css' %} >
+    <link rel="stylesheet" href={% static 'components/_header.css' %} >
+    <link rel="stylesheet" href={% static 'components/_footer.css' %} >
+    <title>Create post</title>
+{% endblock head %}
+
+
+{% block main %}
+    {% include "compoments/_header.html" %}
+
+
+    <div class="big_block_registration">
+        <form  method="post" enctype="multipart/form-data">
+
+            {% csrf_token %}
+            {% comment %} {% for field in form %}
+            <div class="changing-input">
+                <label for="name" class="text-field__label">{{ form.name.label }}</label>
+                <label for="name" class="text-field__label">{{ form.name.errors }}</label>
+                {{ form.name }}
+            </div>
+                <div class="changing-input">
+                    {{ field }}
+                </div>
+
+                {% endfor %} {% endcomment %}
+
+            <div class="changing-input">
+                <label for="name" class="text-field__label">{{ form.title.errors }}</label>
+                {{ form.title }}
+            </div>
+
+            <div class="changing-input">
+                <label for="name" class="text-field__label">{{ form.text.errors }}</label>
+                {{ form.text }}
+            </div>
+
+            <div class="changing-input">
+                <label for="name" class="text-field__label">{{ form.category.errors }}</label>
+                {{ form.category }}
+            </div>
+
+            <div class="changing-input">
+                <label for="name" class="text-field__label">{{ form.photo_preview.errors }}</label>
+                <div class="photo__placeholder">Choose photo</div>
+                {{ form.photo_preview }}
+            </div>
+            <input type="submit" class="button_log_in log_in" value="Publicate">
+        </form>
+    </div>
+    
+    {% include "compoments/_footer.html" %}
+    
+{% endblock main %}
+
+{% comment %} {% extends '_base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    <title>Update post</title>
+{% endblock title %}
+
+{% block main %}
+    <h2>Update post</h2>
+    <form method="post" enctype='multipart/form-data'>
+        {% csrf_token %}
+        {{ form|crispy }}
+        <input type="submit" value="Update">
+    </form>
+    
+{% endblock main %} {% endcomment %}

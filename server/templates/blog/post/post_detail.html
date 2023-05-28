@@ -1,0 +1,143 @@
+{% extends '_base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+{% block head %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href={% static 'styles/home.css' %} >
+    <link rel="stylesheet" href={% static 'styles/post_detail.css' %} >
+    <link rel="stylesheet" href={% static 'styles/post.css' %} >
+    <link rel="stylesheet" href={% static 'components/_header.css' %} >
+    <link rel="stylesheet" href={% static 'components/_footer.css' %} >
+    <title>{{ post.title }}</title>
+{% endblock head %}
+
+
+{% block main %}
+    {% include "compoments/_header.html" %}
+
+    <div class="container_big_block">
+
+        <div class="part_of_content">
+            <a href={% url 'home' %}>
+                <div class="link_on_posts">
+                    <svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8.1665 2L2.1665 8L8.1665 14" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <p>posts</p>
+                </div>
+            </a>
+
+            <div class="container_big_block__name">
+                <p>{{ post.title }}</p>
+            </div>
+
+            <div class="container_big_block__data">
+                <p>{{ post.created }}</p>
+            </div>
+
+            <div class="container_big_block__athor">
+                <a href={% url 'user_detail' pk=post.author.pk %}>
+                <div class="container_big_block__athor-elements">
+                    <img class="post__user-avatar" src={{ post.author.avatar.url }}>
+                    <p>{{ post.author.username }} {{ post.author.username }}</p>
+                </div>
+                </a>
+            </div>
+            
+            <div class="container_big_block__options">
+                <a href="#comments">
+                    <div class="container_big_block__options-item">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M14.9165 10.25C14.9165 10.6478 14.7585 11.0294 14.4772 11.3107C14.1959 11.592 13.8143 11.75 13.4165 11.75H4.4165L1.4165 14.75V2.75C1.4165 2.35218 1.57454 1.97064 1.85584 1.68934C2.13715 1.40804 2.51868 1.25 2.9165 1.25H13.4165C13.8143 1.25 14.1959 1.40804 14.4772 1.68934C14.7585 1.97064 14.9165 2.35218 14.9165 2.75V10.25Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                            
+                        <p class="container_big_block__options-fonts">Comment</p>
+                    </div>
+                </a>
+
+                <div class="container_big_block__options-item" onclick="addLike( '{{ post.id }}' , '{{ user.pk }}' )">
+                    <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10.1252 16.5C10.0427 16.5 9.9602 16.5 9.87768 16.4153H9.79515C7.97967 15.4831 3.68853 12.8559 2.20313 8.70339C1.95557 7.94068 1.37791 4.80508 3.1934 2.85593C4.26618 1.66949 5.25645 1.5 5.91662 1.5C7.48454 1.5 9.13498 2.4322 10.1252 3.78814C11.1155 2.34746 12.6009 1.5 14.3339 1.5C14.994 1.5 15.9843 1.66949 17.1396 2.85593C18.9551 4.80508 18.3774 8.02542 18.1299 8.70339C16.6445 12.9407 12.2708 15.4831 10.5379 16.4153C10.3728 16.5 10.2078 16.5 10.1252 16.5Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>  
+                    <p class="container_big_block__options-fonts" id="likes"> {{likes}} </p>
+                </div>
+                <div class="container_big_block__options-item" onclick="addCopyLink('/post/{{post.id}}/')">
+                    <svg width="19" height="22" viewBox="0 0 19 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1.1665 11V19C1.1665 19.5304 1.37722 20.0391 1.75229 20.4142C2.12736 20.7893 2.63607 21 3.1665 21H15.1665C15.6969 21 16.2056 20.7893 16.5807 20.4142C16.9558 20.0391 17.1665 19.5304 17.1665 19V11" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M13.1665 5L9.1665 1L5.1665 5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M9.1665 1V14" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                        
+                    <p class="container_big_block__options-fonts">Share</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="image-post__preview">
+            <img class="woman" src={{ post.photo_preview.url }}>
+        </div>
+    
+    </div>
+
+
+    <div class="text_of_post">
+        {{ post.text }}
+    </div>
+
+    <div class="comments" id="comments">
+        <label>Comments</label>
+        <hr>
+        {% for comm in comments|slice:":1" %}
+        <div class="comment">
+            <div class="comment-user">
+                <img src={{ comm.author.avatar.url }} class="comment-avatar" alt="">
+                <div>{{ comm.author.username }}</div>
+            </div>
+            <div class="comment-text">{{ comm.text }}</div>
+        </div>
+        {% endfor %}
+        <div class="comment__hidden">
+        {% for comm in comments|slice:"1::" %}
+            <div class="comment">
+                <div class="comment-user">
+                    <img src={{ comm.author.avatar.url }} class="comment-avatar" alt="">
+                    <div>{{ comm.author.username }}</div>
+                </div>
+                <div class="comment-text">{{ comm.text }}</div>
+            </div>
+        {% endfor %}
+        </div>
+        <div class="input-place__comment">
+            {% if user.is_authenticated %}
+                <form method="post" enctype='multipart/form-data' class='form__input'>
+                    {% csrf_token %}
+                    <input type="text" id="id_text" name="text" maxlength="256" class="input__comment" placeholder="Enter comment"/>
+                    <input type="submit" class="input__submit-arrow" value=""/>
+                </form>
+            {% endif %}
+                
+        </div>
+
+        <button class="button-view-more" onclick="viewMoreComments()">View more</button>
+    
+    </div>
+
+{% include "compoments/_footer.html" %}
+
+    <style>
+        @media (max-width: 1260px) {
+            .container_big_block {
+                background-image: url({{ post.photo_preview.url }});
+            }
+        }
+    </style>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script type='text/javascript' src={% static 'js/likesAPI.js/' %}></script>
+
+{% endblock main %}

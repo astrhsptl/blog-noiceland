@@ -1,0 +1,46 @@
+{% extends '_base.html' %}
+{% load static %}
+
+{% block head %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href={% static 'styles/sign_up.css' %} >
+    <link rel="stylesheet" href={% static 'components/_header.css' %} >
+    <link rel="stylesheet" href={% static 'components/_footer.css' %} >
+    <title>Log in</title>
+{% endblock head %}
+
+{% block main %}
+    {% include "compoments/_header.html" %}
+
+    <div class="big_block_registration">
+        <a href={% url 'account_signup' %} style="text-decoration: none;">
+            <div class="button_create">
+                <input type="button" class="create" value="Create new account">
+            </div>
+        </a>
+
+        <div class="delimiter">
+            <a>or</a>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="sign-input">
+                <input id="id_login" name="login" placeholder="Email or username">
+            </div>
+
+            <div class="sign-input"> 
+                <input id="id_password" name="password" type="password" placeholder="Password">
+            </div>
+
+            <input type="submit" class="button_log_in log_in" value="Log in">
+        </form>
+        
+    </div>
+
+    {% include "compoments/_footer.html" %}
+
+{% endblock main %}

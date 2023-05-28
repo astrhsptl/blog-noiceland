@@ -1,0 +1,16 @@
+{% extends '_base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    <title>Update comment</title>
+{% endblock title %}
+
+{% block main %}
+    <h2>Update comment</h2>
+    <form method="post" enctype='multipart/form-data'>
+        {% csrf_token %}
+        {{ form|crispy }}
+        <input type="submit" value="Update">
+    </form>
+    
+{% endblock main %}

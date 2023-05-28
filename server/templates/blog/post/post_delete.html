@@ -1,0 +1,73 @@
+{% extends '_base.html' %}
+{% load static %}
+
+
+{% block head %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href={% static 'styles/account.css' %} >
+    <link rel="stylesheet" href={% static 'styles/profile-head-styles.css' %} >
+    <link rel="stylesheet" href={% static 'styles/delete.css' %} >
+    <link rel="stylesheet" href={% static 'components/_header.css' %} >
+    <link rel="stylesheet" href={% static 'components/_footer.css' %} >
+    <title>Delete post</title>
+{% endblock head %}
+
+{% block main %}
+    {% include "compoments/_header.html" %}
+
+    <div class="main">
+        <!-- Content -->
+        <div class="content__profile container__custom custom_delete_container">
+            <div class="content-posts">
+                <div class="post-container">
+                    <div class="post">
+                        <img class="post-image__preview" src={{ post.photo_preview.url }} alt="">
+
+                        <div class="post-text">
+                            {{ post.title }}
+                        </div>
+                        <hr style="width: 80%"/>
+                        
+                        <div class="options">
+                            <form method="post" enctype='multipart/form-data'>{% csrf_token %}
+                                {{ form }}
+                                <input class="button__delete" type="submit" value="Delete?">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include "compoments/_footer.html" %}
+
+{% comment %} 
+    {{ author.username }}
+    {{ author.email }}
+    <!-- <img src="{{ author.photo_preview.url }}"/> -->
+    {% if user.id == author.id %}
+        <a href="{% url 'me_update' pk=user.id %}"><button>Update profile</button></a>
+    {% else %}
+        <button onclick="subscribe()">Subscribe</button>
+    {% endif %} {% endcomment %}
+{% comment %} {% extends '_base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    <title>Update post</title>
+{% endblock title %}
+
+{% block main %}
+    <h2>Delete post</h2>
+    {{ post.title }}
+    <form method="post" enctype='multipart/form-data'>{% csrf_token %}
+        {{ form|crispy }}
+        <input type="submit" value="Delete?">
+    </form>
+    
+{% endblock main %} {% endcomment %}
+{% endblock %} 

@@ -1,0 +1,53 @@
+{% extends '_base.html' %}
+{% load static %}
+
+{% block head %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href={% static 'styles/categories.css' %} >
+    <link rel="stylesheet" href={% static 'styles/home.css' %} >
+    <link rel="stylesheet" href={% static 'styles/post.css' %} >
+    <link rel="stylesheet" href={% static 'components/_header.css' %} >
+    <link rel="stylesheet" href={% static 'components/_footer.css' %} >
+    <title>Posts</title>
+{% endblock head %}
+
+{% block main %}
+{% include "compoments/_header.html" %}
+    <div class="back_to container">
+        <svg width="19" height="34" viewBox="0 0 19 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16.9014 2L1.94362 17L16.9014 32" stroke="#2C170C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <a href="{% url 'home' %}" class="back_to__text">back to homepage</a>
+    </div>
+
+    <div class="title">
+        <p>Posts</p>
+    </div>
+
+    <div class="popular_posts">
+        {% for post in posts  %}
+            <a href={% url 'post_detail' pk=post.pk %}>
+            <div class="block_with_one_post">
+                <div class="box_image1">
+                    <img src={{ post.photo_preview.url }}>
+                </div>
+                <div class="text1">
+                    <p class="small_t">
+                        {{ post.title }}
+                    </p>
+                    <p class="tiny_t">
+                        {{ post.author.username }}
+                        {{ post.author.username }} 
+                    </p>
+                </div>
+            </div>
+            </a>
+        {% endfor %}
+
+    </div> 
+
+{% include "compoments/_footer.html" %}
+{% endblock main %}

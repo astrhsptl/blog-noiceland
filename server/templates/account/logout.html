@@ -1,0 +1,29 @@
+{% extends '_base.html' %}
+{% load static %}
+
+{% block head %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href={% static 'styles/sign_up.css' %} >
+    <link rel="stylesheet" href={% static 'components/_header.css' %} >
+    <link rel="stylesheet" href={% static 'components/_footer.css' %} >
+    <title>Logout</title>
+{% endblock head %}
+
+{% block main %}
+    {% include "compoments/_header.html" %}
+
+    <div class="logout-container">
+            <h1>Log Out</h1>
+            <p>Are you sure you want to log out?</p>
+            <form method="post" action="{% url 'account_logout' %}">
+                {% csrf_token %}
+                <input type="submit" class="log_in" value="Log out">
+            </form>
+    </div>
+
+    {% include "compoments/_footer.html" %}
+
+{% endblock main %}

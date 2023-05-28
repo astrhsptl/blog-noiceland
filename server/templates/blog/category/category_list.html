@@ -1,0 +1,48 @@
+{% extends '_base.html' %}
+{% load static %}
+{% load custom_tags %}
+
+
+{% block head %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href={% static 'styles/categories.css' %} >
+    <link rel="stylesheet" href={% static 'components/_header.css' %} >
+    <link rel="stylesheet" href={% static 'components/_footer.css' %} >
+    <title>Posts</title>
+{% endblock head %}
+
+{% block main %}
+{% include "compoments/_header.html" %}
+    <div class="back_to container">
+        <svg width="19" height="34" viewBox="0 0 19 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16.9014 2L1.94362 17L16.9014 32" stroke="#2C170C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <a href="{% url 'home' %}" class="back_to__text">back to homepage</a>
+    </div>
+
+    <div class="title">
+        <p>Categories</p>
+    </div>
+
+    <div class="block_of_categories">
+        {% for category in categories  %}
+
+            {% url 'post_list' as posts %}
+                <a href={% lwq  posts "category" category.pk %}>
+                    <div class="block_of_categories__one_block">
+                        <div class ="block_of_categories__one_block-ditail">
+                            <p class="name_of_categories_mini">{{ category.title }}</p>
+                            <img src={{ category.photo_preview.url }} class='category-image__preview'>
+                        </div>
+                    </div>
+                </a>
+
+        {% endfor %}
+
+    </div> 
+
+{% include "compoments/_footer.html" %}
+{% endblock main %}

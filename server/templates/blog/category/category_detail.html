@@ -1,0 +1,14 @@
+{% extends '_base.html' %}
+{% load static %}
+
+
+{% block title %}
+    <title>Category {{ category.title }}</title>
+{% endblock title %}
+
+{% block main %}
+    {{ category.title }}
+    {{ category.discription }}
+    <img src="{{ category.photo_preview.url }}"/>
+
+{% endblock main %}

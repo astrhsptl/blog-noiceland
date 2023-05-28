@@ -1,0 +1,145 @@
+{% extends '_base.html' %}
+{% load static %}
+
+
+{% block head %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href={% static 'styles/account.css' %} >
+    <link rel="stylesheet" href={% static 'styles/profile-head-styles.css' %} >
+    <link rel="stylesheet" href={% static 'components/_header.css' %} >
+    <link rel="stylesheet" href={% static 'components/_footer.css' %} >
+    <title>{{ author.username }}</title>
+{% endblock head %}
+
+{% block main %}
+    {% include "compoments/_header.html" %}
+
+    <div class="main main__account">
+        <!-- Profile -->
+        {% include "compoments/_profile_head.html" %}
+
+        <!-- Content -->
+        <div class="content__profile container__custom">
+            <div class="content-posts">
+                <div class="post-container">
+                    {% for item in page_obj %}
+                    <div class="post">
+                        <img class="post-image__preview" src={{ item.photo_preview.url }} alt="">
+
+                        <div class="post-text">
+                            {{ item.title }}
+                        </div>
+                        <hr style="width: 80%"/>
+                        <div class="options">
+                            <!-- Heart -->
+                            
+                            <svg onclick="addLike( '{{ item.id }}' , '{{ author.pk }}' )" width="50" height="46" viewBox="0 0 50 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M24.784 44.3797C24.5543 44.3797 24.3245 44.3797 24.0948 44.1387H23.8651C18.8112 41.4881 6.86555 34.0182 2.73053 22.2108C2.04136 20.0422 0.433291 11.1264 5.48721 5.58421C8.47362 2.21069 11.2303 1.72876 13.0681 1.72876C17.4328 1.72876 22.0273 4.37938 24.784 8.23484C27.5407 4.13842 31.6757 1.72876 36.4999 1.72876C38.3377 1.72876 41.0944 2.21069 44.3105 5.58421C49.3644 11.1264 47.7564 20.2831 47.0672 22.2108C42.9322 34.2591 30.7568 41.4881 25.9326 44.1387C25.4732 44.3797 25.0137 44.3797 24.784 44.3797Z" fill="white" stroke="#25211A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <!-- Comment -->
+                            <a href="{% url 'post_detail' pk=item.pk %}#comments">
+                                <svg width="47" height="48" viewBox="0 0 47 48" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                    <rect x="0.0991211" y="0.7901" width="45.9325" height="46.5283" fill="url(#pattern0)"/>
+                                    <defs>
+                                    <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
+                                    <use xlink:href="#image0_195_189" transform="matrix(0.0158277 0 0 0.015625 -0.00648584 0)"/>
+                                    </pattern>
+                                    <image id="image0_195_189" width="64" height="64" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAABuwAAAbsBOuzj4gAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAOmSURBVHic7ZtPSxtBGMZ/s+RoW7wUVFAQj34Aizl4EFI8W0o/RMBv0E/Qk9feQ6GKIEgLXoSKtR/Cg2BEL9rqzeDbw0xkM85uspvszpjNA0OSzcy77/PM/9l3lYiQF0qpCHgHbACLwAwwaz6ncht24x64BNrm8ww4AE5E5DG3VRHJnIAG8BW4AsRzujK+NHJxyUh8FTgOgHRSOgZWRy4AsATsBUBw0LQHLA3CTfUbA5RSDeAb8CYhyw26Lx4C58AF0BaRu1TDGaGUeoUeX+aAeWAdPfZMJxT5C3wUkZ+phvvU/BbQwa3yDrAG1PL0vVEkoGZ82EnwsQNs5eoCwHaC0SNgxRfpFH9XjG8un7czCWBq3qVm0zfRAYRoJrRaZ0twGWg4DNySc5rxJELD+GxX4DMOdsElR8FbYNk3qRwiLCdw6Zkd7EL2VOdU7aWkhNa85xQAvcix+03wfX4AEZoOXk+LpXhGe4V35Nv5EYpgzw7HPQKYpmKrFNxUN4QAKw5+DREhQuMDvdgVkd+MCQyXXevyE+eI57u6Nd+1VkArWLM4XgGRQg9+v2LK3ABvRaRTSHV4glKqBlzTu3eoR+gNRRwH40YewHA6sC5vROiTnDgOy3HJC2xuixH6+CqO85Kc8QGb20yE3mPHcVGSMz5gc5tVwB29B5ivZcSHGaHAHKr8i126j7BOb7OQV0otKKVaSqm2SS2l1EJo5bpwcJsCa4WUYV5d4Pluq7vjWgilnMOOXT63AC2HsW5qhVKuSAHaKQ61QynXT4DuXqCyGEaAoxfyX19MBsE8AsScaqH7Z9t87+tM2eXSBJgshNCPmuOwl8bjBJvbZYRuSnHMleSMD9jc2q4WMF+SMz5gc7uM0JEWcayX5IwP2NzOJkdiwIn5o4tpoF6ib2WhTi/5a+AkEh1gtG9lbpbmVnmwOe2LyGN3cVDZByPxTNV9NGYyVfvhqMlc3cfjpkC1AyRSVKtGiEzMQHWDpGKGqhsmZ7WEsQ6UnITKDqj0KIKlT4H6APd6b/IOc6+Bg6WzNrlhw+VP+9jfBB6GsF9MuLzD0dwvTBRAfqgXJvqOAWnI88qMiCiHnU30CW8t5XbhvDKTsbWktgDcNf8AbBbtW+4uMCoBfJP3KkAI5L0JEAp5LwKERF5kyFlgECil7Bt06B3tO8AnEfleqCMJ8BEfEAx58CNAF97Jgz8BgiAPfgQIhjyUI8Cf2PegyAOlzAJ14Iv5+VlEfhR6w4z4D2acJKyWCZEjAAAAAElFTkSuQmCC"/>
+                                    </defs>
+                                </svg>
+                            </a>
+                            <!-- Share -->
+                            <svg onclick="addCopyLink('{% url 'post_detail' pk=item.pk %}')"  width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="37" cy="7" r="6" fill="white" stroke="black" stroke-width="2"/>
+                                <path d="M13 21.9291C13 25.2428 10.3137 27.9291 7 27.9291C3.68629 27.9291 1 25.2428 1 21.9291C1 18.6154 3.68629 15.9291 7 15.9291C10.3137 15.9291 13 18.6154 13 21.9291Z" fill="white" stroke="black" stroke-width="2"/>
+                                <circle cx="37" cy="37" r="6" fill="white" stroke="black" stroke-width="2"/>
+                                <line x1="12.499" y1="18.1346" x2="31.499" y2="7.13457" stroke="black" stroke-width="2"/>
+                                <line x1="12.534" y1="25.1545" x2="31.534" y2="37.1545" stroke="black" stroke-width="2"/>
+                            </svg>
+                            {% if item.author.id == user.id %}
+                                <a href="{% url 'post_delete' pk=item.pk %}">
+                                    <svg width="46" height="48" viewBox="0 0 46 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M16 18H18V37H16V18Z" fill="black" stroke="black" stroke-width="0.5"/>
+                                        <path d="M28 18H30V37H28V18Z" fill="black" stroke="black" stroke-width="0.5"/>
+                                        <path d="M4.33333 10.4167V9.91667H3.83333H0.5V7.5H45.5V9.91667H42.1667H41.6667V10.4167V27.5V44.5833C41.6667 45.3371 41.3312 46.0734 40.7112 46.626C40.0893 47.1803 39.2348 47.5 38.3333 47.5H7.66667C6.76522 47.5 5.91065 47.1803 5.28878 46.626C4.66878 46.0734 4.33333 45.3371 4.33333 44.5833V10.4167ZM7.16667 44.5833V45.0833H7.66667H38.3333H38.8333V44.5833V10.4167V9.91667H38.3333H7.66667H7.16667V10.4167V44.5833Z" stroke-width="0.01" fill="black" stroke="black"/>
+                                        <path d="M16 1H30V2H16V1Z" fill="black" stroke="black" stroke-width="0.5"/>
+                                    </svg>
+                                </a>
+                                <a href="{% url 'post_update' pk=item.pk %}">
+                                    <svg width="46" height="48" stroke-width="0.1" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <mask id="path-1-inside-1_1_105" fill="white">
+                                        <path d="M11.8853 1.08527C11.9178 1.05278 11.952 1.0228 11.9903 0.997355C12.3586 0.75251 14.485 -0.485531 16.799 1.82843C19.113 4.14238 17.8749 6.26881 17.6301 6.63714C17.6046 6.67541 17.5746 6.70963 17.5421 6.74213L7.82175 16.4625C7.69928 16.585 7.5471 16.6736 7.38012 16.7195L1.52527 18.3317C0.777169 18.5377 0.089677 17.8503 0.295678 17.1021L1.90788 11.2473C1.95386 11.0803 2.04242 10.9281 2.16489 10.8057L11.8853 1.08527Z"/>
+                                        </mask>
+                                        <path d="M10.2279 4.29901L14.4706 8.54165L15.8848 7.12743L11.6422 2.88479L10.2279 4.29901ZM1.52527 18.3317L0.994312 16.4035L1.52527 18.3317ZM0.295678 17.1021L2.22391 17.6331L0.295678 17.1021ZM1.90788 11.2473L3.83611 11.7783L1.90788 11.2473ZM7.38012 16.7195L6.84916 14.7913L7.38012 16.7195ZM17.6301 6.63714L19.2956 7.74433L17.6301 6.63714ZM16.1279 5.32791L6.40753 15.0483L9.23596 17.8767L18.9564 8.15634L16.1279 5.32791ZM3.5791 12.2199L13.2995 2.49949L10.4711 -0.328939L0.750678 9.39146L3.5791 12.2199ZM6.84916 14.7913L0.994312 16.4035L2.05624 20.26L7.91108 18.6478L6.84916 14.7913ZM2.22391 17.6331L3.83611 11.7783L-0.0203507 10.7163L-1.63255 16.5712L2.22391 17.6331ZM13.0975 2.66292C13.1292 2.64185 13.4074 2.4719 13.7822 2.44991C14.0609 2.43355 14.6188 2.47667 15.3848 3.24264L18.2132 0.414214C16.6652 -1.13377 15.0029 -1.62861 13.5479 -1.54323C12.1889 -1.46348 11.2197 -0.891984 10.8831 -0.668214L13.0975 2.66292ZM15.3848 3.24264C16.1508 4.00862 16.1939 4.56647 16.1775 4.84523C16.1555 5.22001 15.9856 5.49824 15.9645 5.52994L19.2956 7.74433C19.5194 7.40771 20.0909 6.43856 20.1706 5.07956C20.256 3.62453 19.7612 1.9622 18.2132 0.414214L15.3848 3.24264ZM0.994312 16.4035C1.74242 16.1975 2.42991 16.885 2.22391 17.6331L-1.63255 16.5712C-2.25055 18.8155 -0.188081 20.878 2.05624 20.26L0.994312 16.4035ZM0.750678 9.39146C0.383273 9.75887 0.11759 10.2154 -0.0203507 10.7163L3.83611 11.7783C3.79013 11.9452 3.70157 12.0974 3.5791 12.2199L0.750678 9.39146ZM6.40753 15.0483C6.53 14.9258 6.68218 14.8373 6.84916 14.7913L7.91108 18.6478C8.41203 18.5098 8.86855 18.2441 9.23596 17.8767L6.40753 15.0483ZM18.9564 8.15634C19.0484 8.0643 19.1741 7.9271 19.2956 7.74433L15.9645 5.52994C16.0351 5.42372 16.1009 5.35496 16.1279 5.32791L18.9564 8.15634ZM13.2995 2.49949C13.2725 2.52653 13.2037 2.59231 13.0975 2.66292L10.8831 -0.668214C10.7003 -0.546716 10.5631 -0.420981 10.4711 -0.328939L13.2995 2.49949Z" fill="#222222" mask="url(#path-1-inside-1_1_105)"/>
+                                    </svg>
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+                
+                </div>
+                            <!-- Paginator -->
+            <div class="paginator-container">
+            <!-- {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+    
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}"></a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">&raquo; </a>
+            {% endif %} -->
+
+                {% if page_obj.paginator.page_range|length < 5 %}
+                    {% for i in page_obj.paginator.page_range %}
+                        {% if i == page_obj.number %}
+                            <a href="?page={{i}}"><div class="paginator-options paginator-current"> {{ i }}</div></a>
+                        {% else %}
+                            <a href="?page={{i}}"><div class="paginator-options"> {{ i }}</div></a>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+
+                    <a href="?page=1"><div class="paginator-options paginator-current">&laquo;</div></a>
+                    
+                    {% if page_obj.has_previous %}
+                        <!-- <a href="?page=1">1</a> -->
+                        <a href="?page={{ page_obj.previous_page_number }}"><div class="paginator-options paginator-current">{{ page_obj.previous_page_number }}</div></a>
+                    {% endif %}
+
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}"><div class="paginator-options paginator-current">{{ page_obj.next_page_number }}</div></a>
+                    {% endif %}
+                    
+                    <a href="?page={{ page_obj.paginator.num_pages }}"><div class="paginator-options paginator-current">&raquo;</div></a>
+
+                {% endif %}
+            </div>
+            </div>
+
+            <div class="nav-subscribes">
+                {% if author.pk == user.pk %}
+                    <a href={% url 'post_create' %}><button class="button__make-posts button__in-common">Make post</button></a>
+                {% endif %}    
+                <div class="subscribes">
+                    <div class="subscribe-title">Subscribes</div>
+                    <div class="subscribe-list container__custom">
+                        {% for subscriber in subscribers %}
+                            <a href={% url "user_detail" pk=subscriber.subscriber.pk %}><span class="subscriber"><img class="preview__subscriber" src={{ subscriber.subscriber.avatar.url }}/></span></a>
+                {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    {% include "compoments/_footer.html" %}
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script type='text/javascript' src={% static 'js/likesAPI.js/' %}></script>
+{% endblock main %} 

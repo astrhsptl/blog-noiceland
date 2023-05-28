@@ -1,0 +1,16 @@
+{% extends '_base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    <title>Delete comment</title>
+{% endblock title %}
+
+{% block main %}
+    <h2>Delete comment</h2>
+    {{ post.title }}
+    <form method="post" enctype='multipart/form-data'>{% csrf_token %}
+        {{ form|crispy }}
+        <input type="submit" value="Delete?">
+    </form>
+    
+{% endblock main %}

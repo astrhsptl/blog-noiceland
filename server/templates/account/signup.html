@@ -1,0 +1,45 @@
+{% extends '_base.html' %}
+{% load static %}
+
+{% block head %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href={% static 'styles/sign_up.css' %} >
+    <link rel="stylesheet" href={% static 'components/_header.css' %} >
+    <link rel="stylesheet" href={% static 'components/_footer.css' %} >
+    <title>Register</title>
+{% endblock head %}
+
+{% block main %}
+    {% include "compoments/_header.html" %}
+
+    <div class="big_block_registration">
+        <h1>Register</h1>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="sign-input">
+                    {% if field == form.background %}
+                        <div class="photo__placeholder">Choose background</div>
+                    {% elif field == form.avatar %}    
+                        <div class="photo__placeholder">Choose avatar</div>
+                    {% endif %}
+                    {{field}}
+                </div>
+                {% if field.errors%}
+                {% for error in field.errors %}
+                <div class="alert alert-danger">
+                    {{error}}
+                </div>
+                {% endfor %}
+                {% endif %}
+            {% endfor %}
+            <input type="submit" class="button_log_in log_in" value="Register">
+        </form>
+    </div>
+    
+    {% include "compoments/_footer.html" %}
+
+{% endblock main %}

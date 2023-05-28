@@ -1,0 +1,103 @@
+{% extends '_base.html' %}
+{% load static %}
+
+{% block head %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href={% static 'styles/home.css' %} >
+    <link rel="stylesheet" href={% static 'styles/post.css' %} >
+    <link rel="stylesheet" href={% static 'components/_header.css' %} >
+    <link rel="stylesheet" href={% static 'components/_footer.css' %} >
+    <title>Home</title>
+{% endblock head %}
+
+{% block main %}
+   {% include "compoments/_header.html" %}
+    <div class="all">
+    {% if popular|length != 0 %}
+    <div class="container_big_block">
+            <div class="box_image1">
+                <img src={{ latest.photo_preview.url }}>
+            </div>
+
+            <div class="box_with_text">
+                    <div class="huge_t1">
+                        <a href={% url 'post_detail' pk=latest.pk %}>
+                            {{ latest.title }}
+                        </a>
+                    </div>
+                    <p class="small_t1">
+                        <a href={% url 'post_detail' pk=latest.pk %}>
+                            {{ latest.text }}
+                        </a>
+                    </p>
+
+                <p class="tiny_t1">
+                    <a href={% url 'user_detail' pk=latest.author.id %}>
+                        {{ latest.author.name }}
+                        {{ latest.author.lastname }}
+                    </a>
+                </p>
+            </div>
+    </div>
+
+    <div class="popular_posts">
+        {% for item in popular %} 
+            <div class="block_with_one_post">
+
+            <div class="box_image1">
+                <a href={% url 'post_detail' pk=item.pk %}>
+                    <img src={{ item.photo_preview.url }}>
+                </a>
+            </div>
+            <div class="text1">
+                <p class="small_t">
+                    <a href={% url 'post_detail' pk=item.pk %}>
+                        {{ item.title }}
+                    </a>
+                </p>
+                <p class="tiny_t">
+                    <a href={% url 'user_detail' pk=item.author.pk %}>
+                        {{ item.author.name }}
+                        {{ item.author.lastname }}
+                    </a>
+                </p>
+            </div>
+
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="delimiter">
+        <h2>Latest posts<h2>
+    </div>
+
+    <div class="popular_posts">
+        {% for item in popular %} 
+        <div class="block_with_one_post">
+            <div class="box_image1">
+                <img src={{ item.photo_preview.url }}>
+            </div>
+            <div class="text">
+                <to class="small_t">{{ item.title }}</p>
+                <p class="tiny_t">
+                    <a href={% url 'user_detail' pk=item.author.pk %}>By {{ item.author.name }} {{ item.author.lastname }}</a>
+                </p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <a href="{% url 'post_list' %}" style="display: flex; justify-content: center;"><input class="button" type="button" value="view all latest posts"></a>
+
+    {% endif %}
+
+    {% include "compoments/_footer.html" %}
+
+</div>
+
+{% endblock main %}
+</body>
+</html>

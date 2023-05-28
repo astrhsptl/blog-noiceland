@@ -1,0 +1,50 @@
+version: '3.9'
+services:
+
+  nginx:
+    build: ./nginx
+    links:
+      - backend
+    depends_on:
+      - backend
+    volumes:
+      - static_volume:/app/server/static
+      - media_volume:/app/server/media
+    ports:
+      - "80:80"
+      - "443:443"
+
+  db:
+    image: postgres:13
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
+
+  backend:
+    build: .
+    depends_on:
+      - db
+      - redis
+    restart: always
+    links:
+      - db
+      - redis
+    command: >
+      sh -c " python manage.py makemigrations &&
+              python manage.py migrate &&
+              python manage.py collectstatic --noinput &&
+              celery -A server worker -l info --detach &&
+              gunicorn server.wsgi:application --bind 0.0.0.0:4000"
+    ports:
+      - "4000:4000"
+
+  redis:
+    image: redis:latest 
+
+volumes:
+  media_volume:
+  static_volume:
+  postgres_data:
